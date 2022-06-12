@@ -3,14 +3,12 @@ package guru.qa;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Condition.text;
@@ -77,7 +75,25 @@ public class AvitoParametrizedTests {
     void methodSourceParameterizedTest(String searchData, List<String> expectedResult) {
         Selenide.open("https://www.avito.ru/");
         $("[data-marker='search-form/suggest']").setValue(searchData).pressEnter();
-        $$("div[data-marker='item'].items-listItem-Gd1jN").shouldHave(CollectionCondition.texts(expectedResult));
+        int resultListSize = $$("div[data-marker='item'].items-listItem-Gd1jN").texts().stream()
+                .filter(t -> filterTextByExpectedResults(t, expectedResult))
+                .collect(Collectors.toList())
+                .size();
+        Assertions.assertTrue(resultListSize > 0);
+    }
+
+    /*Чтобы отфильтровать каждый элемент полученной коллекции по 2 строкам из списка, нам понадобится дополнительный
+    метод. */
+    private boolean filterTextByExpectedResults(String actualText, List<String> expectedResults) {
+        boolean isSuccessfulFiltering = true;
+
+        for (String expectedResult : expectedResults){
+            if (!actualText.contains(expectedResult)){
+                isSuccessfulFiltering = false;
+                break;
+            }
+        }
+        return isSuccessfulFiltering;
     }
 
 /*-------------------------------------------------------------------------------------------------------------------*/
