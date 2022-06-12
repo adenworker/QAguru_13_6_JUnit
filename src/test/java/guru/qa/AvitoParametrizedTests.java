@@ -25,7 +25,6 @@ public class AvitoParametrizedTests {
 /*-------------------------------------------------------------------------------------------------------------------*/
     /*Простой тест с именем*/
     @DisplayName("Простая проверка открытия \"Avito\"")
-    @Disabled
     @Test
     void displayNameTest() {
         Selenide.open("https://www.avito.ru/");
@@ -38,7 +37,6 @@ public class AvitoParametrizedTests {
     @ValueSource(strings = {
             "Смартфон", "Пылесос"
     })
-    @Disabled
     @ParameterizedTest(name = "При поиске \"{0}\" в выдаче есть \"{0}\"")
     void valueSourceParametrizedTest(String testDataValue) {
         Selenide.open("https://www.avito.ru/");
@@ -51,7 +49,6 @@ public class AvitoParametrizedTests {
     Enum классе в виде констант.
     Проверяет на наличие на новой странице независимую от запроса строку (1 кейс - 1 Enum элемент).*/
     @EnumSource(EnumTestData.class)
-    @Disabled
     @ParameterizedTest(name = "Проверка \"{0}\"")
     void enumTest(EnumTestData enumData) {
         Selenide.open("https://www.avito.ru/");
@@ -104,7 +101,6 @@ public class AvitoParametrizedTests {
             "Смартфон, Объявления по запросу «Смартфон»",
             "Пылесос, Объявления по запросу «Пылесос»"
     })
-    @Disabled
     @ParameterizedTest(name = "При поиске \"{0}\" на cтранице есть \"{1}\"")
     void csvSourceParametrizedTest(String searchData, String expectedResult) {
         Selenide.open("https://www.avito.ru/");
@@ -117,7 +113,6 @@ public class AvitoParametrizedTests {
     объема тестовых данных). Данные хранятся в .csv файле в папке resources/test_data.
     Проверяет на наличие на новой странице второго текста из пары из тестовых данных (1 кейс - 1 пара).*/
     @CsvFileSource(resources = {"/test_data/avito_test_data.csv"})
-    @Disabled
     @ParameterizedTest(name = "При поиске \"{0}\" на cтранице есть \"{1}\"")
     void csvFileSourceParametrizedTest(String searchData, String expectedResult) {
         Selenide.open("https://www.avito.ru/");
